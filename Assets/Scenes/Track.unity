@@ -1211,8 +1211,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534928458}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.27544883, y: 0.000000016540765, z: -0.000000004739478, w: 0.96131575}
-  m_LocalPosition: {x: 3.85, y: 2.951, z: 17.179998}
+  m_LocalRotation: {x: 0.26188186, y: 0.000000009141709, z: -0.0000000024806224, w: 0.96509993}
+  m_LocalPosition: {x: 3.85, y: 3.951, z: 15.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2417,8 +2417,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.27544883, y: 0.000000016540765, z: -0.000000004739478, w: 0.96131575}
-  m_LocalPosition: {x: 3.85, y: 2.951, z: 17.179998}
+  m_LocalRotation: {x: 0.26188186, y: 0.000000009141709, z: -0.0000000024806215, w: 0.96509993}
+  m_LocalPosition: {x: 3.85, y: 3.951, z: 15.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3168,10 +3168,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 2.31, z: -3.7}
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 2.16
+  m_FollowOffset: {x: 0, y: 3.31, z: -5.65}
+  m_XDamping: 0
+  m_YDamping: 0
+  m_ZDamping: 1
   m_AngularDampingMode: 0
   m_PitchDamping: 0
   m_YawDamping: 0
@@ -9239,9 +9239,10 @@ MonoBehaviour:
   reverseAccel: 4
   maxSpeed: 50
   turnStrength: 180
-  jumpHeight: 60
   gravityForce: 10
   dragOnGround: 3
+  canJump: 1
+  jumpHeight: 60
   whatisGround:
     serializedVersion: 2
     m_Bits: 8
