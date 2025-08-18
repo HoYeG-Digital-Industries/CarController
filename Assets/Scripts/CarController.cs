@@ -16,6 +16,8 @@ public class CarController : MonoBehaviour
     [Range(0,100f)] public float maxSpeed = 50f;
     [Tooltip("This is how much you can turn, higher values will give quicker turning")]
     [Range(0,360f)] public float turnStrength = 180f;
+    [Tooltip("This is how speed effects your turn strength. \n\nTime represents speed \nValue represents turning strength")]
+    [SerializeField] private AnimationCurve turnStrengthSpeedCurve;
     [Tooltip("This is gravity. Affects when you jump and when you fall off things")]
     [Range(0,20f)] public float gravityForce = 10f;
     [Tooltip("This is makes you stickier when you are on the ground. Less drag means more slippy")]
@@ -98,7 +100,9 @@ public class CarController : MonoBehaviour
         turnInput = Input.GetAxis("Horizontal");
         if (grounded)
         {
-            transform.rotation  = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * turnStrength * Time.deltaTime * Input.GetAxis("Vertical"), 0f));
+            Vector3 localVelocity = transform.InverseTransformDirection(theRB.velocity); // rigidbody velocity in local space
+
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * turnStrengthSpeedCurve.Evaluate(theRB.velocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
         }
 
         //turns wheels

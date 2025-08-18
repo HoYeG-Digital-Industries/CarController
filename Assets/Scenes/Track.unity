@@ -9238,7 +9238,31 @@ MonoBehaviour:
   forwardAccel: 8
   reverseAccel: 4
   maxSpeed: 50
-  turnStrength: 180
+  turnStrength: 90
+  turnStrengthSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.04132374
+      outSlope: -0.04132374
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.061469268
+    - serializedVersion: 3
+      time: 47.052517
+      value: 0.24472213
+      inSlope: -0.007980579
+      outSlope: -0.007980579
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   gravityForce: 10
   dragOnGround: 3
   canJump: 1
