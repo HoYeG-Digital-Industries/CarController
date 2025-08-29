@@ -31,6 +31,9 @@ public class CarController : MonoBehaviour
     public bool canJump;
     [Tooltip("This is how high you can jump")]
     [Range(0,60f)] public float jumpHeight = 30f;
+    [Tooltip("This is how many times you can jump before landing")]
+    [Range(1,3)] public int maxJumpCount = 1;
+    public int jumpsSinceGrounded = 0;
 
     [Header("Ground Check")]
     [Tooltip("This is the layer mask for teh ground. Remember to add this to your floor objects")]
@@ -87,6 +90,8 @@ public class CarController : MonoBehaviour
         {
             particleHolder.SetActive(false);
         }
+
+        jumpsSinceGrounded = 0;
     }
 
     void Update() //update that runs based on frame rate of machine
@@ -108,9 +113,11 @@ public class CarController : MonoBehaviour
         //handles jump
         if(canJump)
         {
-            if (Input.GetKeyDown("space") && grounded)
+            if (Input.GetKeyDown("space") && (grounded || jumpsSinceGrounded <= maxJumpCount - 2)) // -2 is to account for the fact that it will remain grounded for a few frames and the counter is 1-indexed not 0
             {
                 theRB.AddForce(Vector3.up * jumpHeight * 1000f);
+
+                jumpsSinceGrounded++;
             }
         }
 
@@ -121,6 +128,8 @@ public class CarController : MonoBehaviour
             Vector3 localVelocity = transform.InverseTransformDirection(theRB.velocity); // rigidbody velocity in local space
 
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * turnStrengthSpeedCurve.Evaluate(theRB.velocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
+
+            jumpsSinceGrounded = 0;
         }
 
         //turns wheels
