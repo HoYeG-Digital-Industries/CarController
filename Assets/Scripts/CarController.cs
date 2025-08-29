@@ -12,6 +12,8 @@ public class CarController : MonoBehaviour
     [Header("Car Attributes")]
     [Tooltip("This is the speed at which you accelerate forward")]
     [Range(0,20f)] public float forwardAccel = 8f; 
+    [Tooltip("This is the speed at which you accelerate while boosting")]
+    [Range(0,20f)] public float speedBoostAcceleration = 12f; 
     [Tooltip("This is the speed at which you accelerate backwards")]
     [Range(0,20f)] public float reverseAccel = 4f;
     [Tooltip("This is the max speed you can reach")]
@@ -25,6 +27,7 @@ public class CarController : MonoBehaviour
     [Tooltip("This is makes you stickier when you are on the ground. Less drag means more slippy")]
     [Range(2,5f)] public float dragOnGround = 3f;
     private float speedInput, turnInput;
+    private bool isBoosting;
 
     [Header("Jumping")]
     [Tooltip("Turns jumping on and off")]
@@ -100,11 +103,20 @@ public class CarController : MonoBehaviour
     {
         UpdateUI();
 
+        if (Input.GetKey(KeyCode.LeftShift)) // TODO: Migrate this to the new input system
+        {
+            isBoosting = true;
+        }
+        else
+        {
+            isBoosting = false;
+        }
+
         //Handle forwards
         speedInput = 0f;
         if (Input.GetAxis("Vertical") > 0) 
         {
-            speedInput = Input.GetAxis("Vertical") * forwardAccel * 1000f;
+            speedInput = Input.GetAxis("Vertical") * (isBoosting ? speedBoostAcceleration : forwardAccel) * 1000f;
         }
         //handles backwards
         else if (Input.GetAxis("Vertical") < 0) 

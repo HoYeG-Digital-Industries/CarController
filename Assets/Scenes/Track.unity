@@ -2767,50 +2767,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2020904375}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1046356547
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1046356549}
-  - component: {fileID: 1046356548}
-  m_Layer: 0
-  m_Name: ProfilerTest
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1046356548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1046356547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68aced33186b999469a99c114d33a501, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1046356549
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1046356547}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5654917, y: 1.7510452, z: -4.4894695}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1055226609 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7546208296234003011, guid: 429897462901256449a9475b76c8182a,
@@ -9450,6 +9406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardAccel: 8
+  speedBoostAcceleration: 12
   reverseAccel: 4
   maxSpeed: 50
   turnStrength: 90
@@ -9481,6 +9438,8 @@ MonoBehaviour:
   dragOnGround: 3
   canJump: 1
   jumpHeight: 60
+  maxJumpCount: 1
+  canAirSteer: 1
   whatisGround:
     serializedVersion: 2
     m_Bits: 8
@@ -9490,9 +9449,6 @@ MonoBehaviour:
   rightFrontWheel: {fileID: 1640606444}
   useParticles: 1
   maxEmissionValue: 25
-  speedText: {fileID: 1705510637}
-  speedTextPrefix: 'Your speed is: '
-  speedTextSuffix: mps
   UIElementArray: []
 --- !u!1001 &1584512017
 PrefabInstance:
@@ -16364,4 +16320,3 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 812919270}
   - {fileID: 502849129}
-  - {fileID: 1046356549}
