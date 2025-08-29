@@ -9449,6 +9449,7 @@ MonoBehaviour:
   rightFrontWheel: {fileID: 1640606444}
   useParticles: 1
   maxEmissionValue: 25
+  timeSinceStart: 0
   UIElementArray: []
 --- !u!1001 &1584512017
 PrefabInstance:

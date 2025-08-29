@@ -64,11 +64,18 @@ public class CarController : MonoBehaviour
     private float emissionRate;
     private GameObject particleHolder;
 
+    [Header("Timing data")]
+    [Tooltip("This is the current time since the level started")]
+    public float timeSinceStart = 0f;
+    private bool isTiming;
+
     [SerializeField]
     public enum UIVariables
     {
         Speed = 0,
         MaxAcceleration,
+        Time,
+
     }
 
     [Serializable] public struct UIElement
@@ -97,11 +104,20 @@ public class CarController : MonoBehaviour
         }
 
         jumpsSinceGrounded = 0;
+
+        // Initialise the timer
+        timeSinceStart = 0.0f;
+
+        // In the future, this can happen on a countdown or when the player first moves
+        isTiming = true; // TODO: For now, timing starts automatically on start
     }
 
     void Update() //update that runs based on frame rate of machine
     {
         UpdateUI();
+
+        // Update the the timer
+        timeSinceStart += Time.deltaTime;
 
         if (Input.GetKey(KeyCode.LeftShift)) // TODO: Migrate this to the new input system
         {
@@ -201,6 +217,16 @@ public class CarController : MonoBehaviour
 
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        /*if (other.CompareTag("Collectable"))
+        {
+            CollectableItem item = other.gameObject.GetCompponent<CollectableItem>();
+
+            item.
+        }*/
+    }
+
     void UpdateUI()
     {
         // Handles the UI Element Array to display chosen value in the designated TMPro box.
@@ -216,6 +242,9 @@ public class CarController : MonoBehaviour
                     break;
                 case UIVariables.MaxAcceleration:
                     UIElementArray[i].text.text = forwardAccel.ToString("F1");
+                    break;
+                case UIVariables.Time:
+                    UIElementArray[i].text.text = timeSinceStart.ToString("F2");
                     break;
                 default:
                     continue;
