@@ -238,13 +238,13 @@ public class CarController : MonoBehaviour
             switch (UIElementArray[i].uiType)
             {
                 case UIVariables.Speed:
-                    UIElementArray[i].text.text = theRB.velocity.magnitude.ToString("F0");
+                    UIElementArray[i].text.text = UIElementArray[i].textPrefix + theRB.velocity.magnitude.ToString("F0") + UIElementArray[i].textSuffix;
                     break;
                 case UIVariables.MaxAcceleration:
-                    UIElementArray[i].text.text = forwardAccel.ToString("F1");
+                    UIElementArray[i].text.text = UIElementArray[i].textPrefix + forwardAccel.ToString("F1") + UIElementArray[i].textSuffix;
                     break;
                 case UIVariables.Time:
-                    UIElementArray[i].text.text = timeSinceStart.ToString("F2");
+                    UIElementArray[i].text.text = UIElementArray[i].textPrefix + timeSinceStart.ToString("F2") + UIElementArray[i].textSuffix;
                     break;
                 default:
                     continue;
