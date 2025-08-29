@@ -33,7 +33,9 @@ public class CarController : MonoBehaviour
     [Range(0,60f)] public float jumpHeight = 30f;
     [Tooltip("This is how many times you can jump before landing")]
     [Range(1,3)] public int maxJumpCount = 1;
-    public int jumpsSinceGrounded = 0;
+    private int jumpsSinceGrounded = 0;
+    [Tooltip("Can you steer while the vehicle isn't grounded")]
+    public bool canAirSteer;
 
     [Header("Ground Check")]
     [Tooltip("This is the layer mask for teh ground. Remember to add this to your floor objects")]
@@ -123,13 +125,11 @@ public class CarController : MonoBehaviour
 
         //handles turning
         turnInput = Input.GetAxis("Horizontal");
-        if (grounded)
+        if (grounded || canAirSteer)
         {
             Vector3 localVelocity = transform.InverseTransformDirection(theRB.velocity); // rigidbody velocity in local space
 
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * turnStrengthSpeedCurve.Evaluate(theRB.velocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
-
-            jumpsSinceGrounded = 0;
         }
 
         //turns wheels
@@ -152,6 +152,8 @@ public class CarController : MonoBehaviour
             grounded = true;
 
             transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+
+            jumpsSinceGrounded = 0;
         }
 
         
