@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CarController : MonoBehaviour
 {
@@ -56,6 +58,22 @@ public class CarController : MonoBehaviour
     private float emissionRate;
     private GameObject particleHolder;
 
+    [SerializeField]
+    public enum UIVariables
+    {
+        Speed = 0,
+        MaxAcceleration,
+    }
+
+    [Serializable] public struct UIElement
+    {
+        public TextMeshProUGUI text;
+        public string textPrefix, textSuffix;
+        public UIVariables uiType;
+    }
+
+    public UIElement[] UIElementArray;
+
 
     void Start()
     {
@@ -74,6 +92,7 @@ public class CarController : MonoBehaviour
 
     void Update() //update that runs based on frame rate of machine
     {
+        UpdateUI();
 
         //Handle forwards
         speedInput = 0f;
@@ -158,6 +177,28 @@ public class CarController : MonoBehaviour
             }
         }
 
+    }
+
+    void UpdateUI()
+    {
+        // Handles the UI Element Array to display chosen value in the designated TMPro box.
+        for(int i = 0; i < UIElementArray.Length; i++)
+        {
+            if(UIElementArray[i].text == null)
+                continue;
+            
+            switch (UIElementArray[i].uiType)
+            {
+                case UIVariables.Speed:
+                    UIElementArray[i].text.text = theRB.velocity.magnitude.ToString("F0");
+                    break;
+                case UIVariables.MaxAcceleration:
+                    UIElementArray[i].text.text = forwardAccel.ToString("F1");
+                    break;
+                default:
+                    continue;
+            }
+        }
     }
 
 }
