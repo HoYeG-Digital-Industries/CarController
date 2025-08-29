@@ -32,8 +32,6 @@ public class CarController : MonoBehaviour
     [Tooltip("This is how high you can jump")]
     [Range(0,60f)] public float jumpHeight = 30f;
 
-
-
     [Header("Ground Check")]
     [Tooltip("This is the layer mask for teh ground. Remember to add this to your floor objects")]
     public LayerMask whatisGround;
@@ -72,6 +70,7 @@ public class CarController : MonoBehaviour
         public UIVariables uiType;
     }
 
+    [Header("UI")]
     public UIElement[] UIElementArray;
 
 
