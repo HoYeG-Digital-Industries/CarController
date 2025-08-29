@@ -75,7 +75,7 @@ public class CarController : MonoBehaviour
         Speed = 0,
         MaxAcceleration,
         Time,
-
+        Score,
     }
 
     [Serializable] public struct UIElement
@@ -217,16 +217,6 @@ public class CarController : MonoBehaviour
 
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        /*if (other.CompareTag("Collectable"))
-        {
-            CollectableItem item = other.gameObject.GetCompponent<CollectableItem>();
-
-            item.
-        }*/
-    }
-
     void UpdateUI()
     {
         // Handles the UI Element Array to display chosen value in the designated TMPro box.
@@ -245,6 +235,9 @@ public class CarController : MonoBehaviour
                     break;
                 case UIVariables.Time:
                     UIElementArray[i].text.text = UIElementArray[i].textPrefix + timeSinceStart.ToString("F2") + UIElementArray[i].textSuffix;
+                    break;
+                case UIVariables.Score:
+                    UIElementArray[i].text.text = UIElementArray[i].textPrefix + GameManager.Instance.score.ToString() + UIElementArray[i].textSuffix;
                     break;
                 default:
                     continue;
