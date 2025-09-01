@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreCollectable : MonoBehaviour
+public class ScoreCollectable : CollectableItem
 {
     public int scoreValue;
 
@@ -19,6 +19,8 @@ public class ScoreCollectable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             GameManager.Instance.AddScore(scoreValue);
+
+            HasBeenCollected();
         }
     }
 }
