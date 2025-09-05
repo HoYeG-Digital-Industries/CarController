@@ -155,9 +155,9 @@ public class CarController : MonoBehaviour
         turnInput = Input.GetAxis("Horizontal");
         if (grounded || canAirSteer)
         {
-            Vector3 localVelocity = transform.InverseTransformDirection(theRB.velocity); // rigidbody velocity in local space
+            Vector3 localVelocity = transform.InverseTransformDirection(theRB.linearVelocity); // rigidbody velocity in local space
 
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * turnStrengthSpeedCurve.Evaluate(theRB.velocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * turnStrengthSpeedCurve.Evaluate(theRB.linearVelocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
         }
 
         //turns wheels
@@ -190,7 +190,7 @@ public class CarController : MonoBehaviour
 
         //moves the sphere that controls everything
         if (grounded){
-            theRB.drag = dragOnGround;
+            theRB.linearDamping = dragOnGround;
 
             if (Mathf.Abs(speedInput) > 0) 
             {
@@ -201,7 +201,7 @@ public class CarController : MonoBehaviour
         }
         else 
         {
-            theRB.drag = 0.1f;
+            theRB.linearDamping = 0.1f;
             theRB.AddForce(Vector3.up * -gravityForce * 100f);
         }
 
@@ -228,7 +228,7 @@ public class CarController : MonoBehaviour
             switch (UIElementArray[i].uiType)
             {
                 case UIVariables.Speed:
-                    UIElementArray[i].text.text = UIElementArray[i].textPrefix + theRB.velocity.magnitude.ToString("F0") + UIElementArray[i].textSuffix;
+                    UIElementArray[i].text.text = UIElementArray[i].textPrefix + theRB.linearVelocity.magnitude.ToString("F0") + UIElementArray[i].textSuffix;
                     break;
                 case UIVariables.MaxAcceleration:
                     UIElementArray[i].text.text = UIElementArray[i].textPrefix + forwardAccel.ToString("F1") + UIElementArray[i].textSuffix;
