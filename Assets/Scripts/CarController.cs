@@ -36,6 +36,8 @@ public class CarController : MonoBehaviour
     [Range(0,60f)] public float jumpHeight = 30f;
     [Tooltip("This is how many times you can jump before landing")]
     [Range(1,3)] public int maxJumpCount = 1;
+    [SerializeField] private bool infiniteJumping = false;
+    [SerializeField] private bool canAirAccelerate = false;
     private int jumpsSinceGrounded = 0;
     [Tooltip("Can you steer while the vehicle isn't grounded")]
     public bool canAirSteer;
@@ -143,7 +145,7 @@ public class CarController : MonoBehaviour
         //handles jump
         if(canJump)
         {
-            if (Input.GetKeyDown("space") && (grounded || jumpsSinceGrounded <= maxJumpCount - 2)) // -2 is to account for the fact that it will remain grounded for a few frames and the counter is 1-indexed not 0
+            if (Input.GetKeyDown("space") && (grounded || jumpsSinceGrounded <= maxJumpCount - 2 || infiniteJumping)) // -2 is to account for the fact that it will remain grounded for a few frames and the counter is 1-indexed not 0
             {
                 theRB.AddForce(Vector3.up * jumpHeight * 1000f);
 
@@ -189,7 +191,7 @@ public class CarController : MonoBehaviour
 
 
         //moves the sphere that controls everything
-        if (grounded){
+        if (grounded || canAirAccelerate){
             theRB.linearDamping = dragOnGround;
 
             if (Mathf.Abs(speedInput) > 0) 
