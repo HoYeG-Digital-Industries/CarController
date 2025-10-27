@@ -23,9 +23,10 @@ public class CarController : MonoBehaviour
     [Tooltip("This is how speed effects your turn strength. \n\nTime represents speed \nValue represents turning strength")]
     [SerializeField] private AnimationCurve turnStrengthSpeedCurve;
     [Tooltip("This is gravity. Affects when you jump and when you fall off things")]
-    [Range(0,20f)] public float gravityForce = 10f;
+    [Range(0f,100f)] public float gravityForce = 10f;
     [Tooltip("This is makes you stickier when you are on the ground. Less drag means more slippy")]
-    [Range(2,5f)] public float dragOnGround = 3f;
+    [Range(2, 5f)] public float dragOnGround = 3f;
+    [Range(2,5f)] public float dragInAir = 3f;
     private float speedInput, turnInput;
     private bool isBoosting;
 
@@ -191,19 +192,21 @@ public class CarController : MonoBehaviour
 
 
         //moves the sphere that controls everything
-        if (grounded || canAirAccelerate){
+        if (grounded || canAirAccelerate)
+        {
             theRB.linearDamping = dragOnGround;
 
-            if (Mathf.Abs(speedInput) > 0) 
+            if (Mathf.Abs(speedInput) > 0)
             {
                 theRB.AddForce(transform.forward * speedInput);
 
                 emissionRate = maxEmissionValue;
             }
         }
-        else 
+
+        if (!grounded)
         {
-            theRB.linearDamping = 0.1f;
+            theRB.linearDamping = dragInAir;
             theRB.AddForce(Vector3.up * -gravityForce * 100f);
         }
 
