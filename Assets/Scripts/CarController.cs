@@ -29,6 +29,8 @@ public class CarController : MonoBehaviour
     [Range(2,5f)] public float dragInAir = 3f;
     private float speedInput, turnInput;
     private bool isBoosting;
+    [Tooltip(("How fast the vehicle rotates to match the desired angle based on the ground")), SerializeField, Range(0.1f,3f)] 
+    private float vehicleLerpSpeed = 1f;
 
     [Header("Jumping")]
     [Tooltip("Turns jumping on and off")]
@@ -182,7 +184,7 @@ public class CarController : MonoBehaviour
         {
             grounded = true;
 
-            transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation, vehicleLerpSpeed * theRB.linearVelocity.magnitude * Time.fixedDeltaTime);
 
             jumpsSinceGrounded = 0;
         }
