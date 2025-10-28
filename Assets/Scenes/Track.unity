@@ -9693,11 +9693,14 @@ MonoBehaviour:
     m_RotationOrder: 4
   gravityForce: 27.5
   dragOnGround: 3
+  dragInAir: 0.1
+  vehicleLerpSpeed: 1
+  offsetFromRb: {x: 0, y: 0, z: 1.74}
   canJump: 1
   jumpHeight: 60
   maxJumpCount: 1
   infiniteJumping: 1
-  canAirAccelerate: 1
+  canAirAccelerate: 0
   canAirSteer: 1
   whatisGround:
     serializedVersion: 2

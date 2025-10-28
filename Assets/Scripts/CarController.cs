@@ -26,20 +26,20 @@ public class CarController : MonoBehaviour
     [Range(0f,100f)] public float gravityForce = 10f;
     [Tooltip("This is makes you stickier when you are on the ground. Less drag means more slippy")]
     [Range(2, 5f)] public float dragOnGround = 3f;
-    [Range(2,5f)] public float dragInAir = 3f;
+    [Range(0.1f,5f)] public float dragInAir = 3f;
     private float speedInput, turnInput;
     private bool isBoosting;
-    [Tooltip(("How fast the vehicle rotates to match the desired angle based on the ground")), SerializeField, Range(0.1f,3f)] 
+    [Tooltip(("How fast the vehicle rotates to match the desired angle based on the ground")), SerializeField, Range(0.1f, 3f)]
     private float vehicleLerpSpeed = 1f;
 
     [Header("Jumping")]
     [Tooltip("Turns jumping on and off")]
     public bool canJump;
+    [SerializeField] private bool infiniteJumping = false;
     [Tooltip("This is how high you can jump")]
     [Range(0,60f)] public float jumpHeight = 30f;
     [Tooltip("This is how many times you can jump before landing")]
     [Range(1,3)] public int maxJumpCount = 1;
-    [SerializeField] private bool infiniteJumping = false;
     [SerializeField] private bool canAirAccelerate = false;
     private int jumpsSinceGrounded = 0;
     [Tooltip("Can you steer while the vehicle isn't grounded")]
