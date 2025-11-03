@@ -6,7 +6,6 @@ using TMPro;
 
 public class CarController : MonoBehaviour
 {
-
     private Rigidbody theRB; // this is the RigidBody that control everything. Do not touch.
 
     [Header("Car Attributes")]
@@ -31,6 +30,10 @@ public class CarController : MonoBehaviour
     private bool isBoosting;
     [Tooltip(("How fast the vehicle rotates to match the desired angle based on the ground")), SerializeField, Range(0.1f, 3f)]
     private float vehicleLerpSpeed = 1f;
+    [Tooltip("Can the vehicle drift")]
+    [SerializeField] private bool canDrift;
+    [SerializeField] private float driftAngle;
+    [SerializeField] private float driftTurnMultiplier;
 
     [Header("Jumping")]
     [Tooltip("Turns jumping on and off")]
@@ -58,6 +61,9 @@ public class CarController : MonoBehaviour
     public float maxWheelTurn = 25f;
     [Tooltip("These are for the wheel game objects. Make sure these are separate when you make the car")]
     public Transform leftFrontWheel, rightFrontWheel;
+
+    [Header("Model")]
+    public Transform vehicleModel;
     
 
     [Header("Particles")]
@@ -160,9 +166,23 @@ public class CarController : MonoBehaviour
         turnInput = Input.GetAxis("Horizontal");
         if (grounded || canAirSteer)
         {
+
             Vector3 localVelocity = transform.InverseTransformDirection(theRB.linearVelocity); // rigidbody velocity in local space
 
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * turnStrengthSpeedCurve.Evaluate(theRB.linearVelocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
+
+            
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * driftTurnMultiplier * turnStrengthSpeedCurve.Evaluate(theRB.linearVelocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
+
+                vehicleModel.localRotation = Quaternion.Euler(vehicleModel.localRotation.eulerAngles.x, turnInput * driftAngle, vehicleModel.localRotation.eulerAngles.z);
+            }
+            else
+            {
+                transform.localRotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * turnStrengthSpeedCurve.Evaluate(theRB.linearVelocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
+
+                vehicleModel.localRotation = Quaternion.Euler(vehicleModel.localRotation.eulerAngles.x, 0, vehicleModel.localRotation.eulerAngles.z);
+            }
         }
 
         //turns wheels

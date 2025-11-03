@@ -1320,7 +1320,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534928458}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.26188186, y: 0.000000009141709, z: -0.0000000024806224, w: 0.96509993}
+  m_LocalRotation: {x: 0.26188186, y: 0.0000000027588793, z: -9.444107e-10, w: 0.9651}
   m_LocalPosition: {x: 3.85, y: 3.951, z: 15.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2756,7 +2756,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.26188186, y: 0.000000009141709, z: -0.0000000024806215, w: 0.96509993}
+  m_LocalRotation: {x: 0.26188186, y: 0.0000000027015308, z: -7.3306594e-10, w: 0.96509993}
   m_LocalPosition: {x: 3.85, y: 3.951, z: 15.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9695,11 +9695,13 @@ MonoBehaviour:
   dragOnGround: 3
   dragInAir: 0.1
   vehicleLerpSpeed: 1
-  offsetFromRb: {x: 0, y: 0, z: 1.74}
+  canDrift: 1
+  driftAngle: 20
+  driftTurnMultiplier: 1.5
   canJump: 1
+  infiniteJumping: 1
   jumpHeight: 60
   maxJumpCount: 1
-  infiniteJumping: 1
   canAirAccelerate: 0
   canAirSteer: 1
   whatisGround:
@@ -9709,6 +9711,7 @@ MonoBehaviour:
   maxWheelTurn: 25
   leftFrontWheel: {fileID: 1370506309}
   rightFrontWheel: {fileID: 1640606444}
+  vehicleModel: {fileID: 840498828}
   useParticles: 1
   maxEmissionValue: 25
   timeSinceStart: 0
