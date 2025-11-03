@@ -9666,7 +9666,7 @@ MonoBehaviour:
   speedBoostAcceleration: 12
   reverseAccel: 4
   maxSpeed: 50
-  turnStrength: 90
+  turnStrength: 75
   turnStrengthSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -9697,7 +9697,7 @@ MonoBehaviour:
   vehicleLerpSpeed: 1
   canDrift: 1
   driftAngle: 20
-  driftTurnMultiplier: 1.5
+  driftTurnMultiplier: 2
   canJump: 1
   infiniteJumping: 1
   jumpHeight: 60

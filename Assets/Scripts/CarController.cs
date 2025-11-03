@@ -10,22 +10,22 @@ public class CarController : MonoBehaviour
 
     [Header("Car Attributes")]
     [Tooltip("This is the speed at which you accelerate forward")]
-    [Range(0,20f)] public float forwardAccel = 8f; 
+    [Range(0, 20f)] public float forwardAccel = 8f;
     [Tooltip("This is the speed at which you accelerate while boosting")]
-    [Range(0,20f)] public float speedBoostAcceleration = 12f; 
+    [Range(0, 20f)] public float speedBoostAcceleration = 12f;
     [Tooltip("This is the speed at which you accelerate backwards")]
-    [Range(0,20f)] public float reverseAccel = 4f;
+    [Range(0, 20f)] public float reverseAccel = 4f;
     [Tooltip("This is the max speed you can reach")]
-    [Range(0,100f)] public float maxSpeed = 50f;
+    [Range(0, 100f)] public float maxSpeed = 50f;
     [Tooltip("This is how much you can turn, higher values will give quicker turning")]
-    [Range(0,360f)] public float turnStrength = 180f;
+    [Range(0, 360f)] public float turnStrength = 180f;
     [Tooltip("This is how speed effects your turn strength. \n\nTime represents speed \nValue represents turning strength")]
     [SerializeField] private AnimationCurve turnStrengthSpeedCurve;
     [Tooltip("This is gravity. Affects when you jump and when you fall off things")]
-    [Range(0f,100f)] public float gravityForce = 10f;
+    [Range(0f, 100f)] public float gravityForce = 10f;
     [Tooltip("This is makes you stickier when you are on the ground. Less drag means more slippy")]
     [Range(2, 5f)] public float dragOnGround = 3f;
-    [Range(0.1f,5f)] public float dragInAir = 3f;
+    [Range(0.1f, 5f)] public float dragInAir = 3f;
     private float speedInput, turnInput;
     private bool isBoosting;
     [Tooltip(("How fast the vehicle rotates to match the desired angle based on the ground")), SerializeField, Range(0.1f, 3f)]
@@ -40,9 +40,9 @@ public class CarController : MonoBehaviour
     public bool canJump;
     [SerializeField] private bool infiniteJumping = false;
     [Tooltip("This is how high you can jump")]
-    [Range(0,60f)] public float jumpHeight = 30f;
+    [Range(0, 60f)] public float jumpHeight = 30f;
     [Tooltip("This is how many times you can jump before landing")]
-    [Range(1,3)] public int maxJumpCount = 1;
+    [Range(1, 3)] public int maxJumpCount = 1;
     [SerializeField] private bool canAirAccelerate = false;
     private int jumpsSinceGrounded = 0;
     [Tooltip("Can you steer while the vehicle isn't grounded")]
@@ -64,14 +64,14 @@ public class CarController : MonoBehaviour
 
     [Header("Model")]
     public Transform vehicleModel;
-    
+
 
     [Header("Particles")]
     [Tooltip("Turns particles on or off")]
     public bool useParticles;
     private ParticleSystem[] dustTrail;
     [Tooltip("This is how quickly your particles emit")]
-    [Range(0,50f)]public float maxEmissionValue = 25f;
+    [Range(0, 50f)] public float maxEmissionValue = 25f;
     private float emissionRate;
     private GameObject particleHolder;
 
@@ -89,7 +89,8 @@ public class CarController : MonoBehaviour
         Score,
     }
 
-    [Serializable] public struct UIElement
+    [Serializable]
+    public struct UIElement
     {
         public TextMeshProUGUI text;
         public string textPrefix, textSuffix;
@@ -141,18 +142,18 @@ public class CarController : MonoBehaviour
 
         //Handle forwards
         speedInput = 0f;
-        if (Input.GetAxis("Vertical") > 0) 
+        if (Input.GetAxis("Vertical") > 0)
         {
             speedInput = Input.GetAxis("Vertical") * (isBoosting ? speedBoostAcceleration : forwardAccel) * 1000f;
         }
         //handles backwards
-        else if (Input.GetAxis("Vertical") < 0) 
+        else if (Input.GetAxis("Vertical") < 0)
         {
             speedInput = Input.GetAxis("Vertical") * reverseAccel * 1000f;
         }
 
         //handles jump
-        if(canJump)
+        if (canJump)
         {
             if (Input.GetKeyDown("space") && (grounded || jumpsSinceGrounded <= maxJumpCount - 2 || infiniteJumping)) // -2 is to account for the fact that it will remain grounded for a few frames and the counter is 1-indexed not 0
             {
@@ -162,32 +163,7 @@ public class CarController : MonoBehaviour
             }
         }
 
-        //handles turning
-        turnInput = Input.GetAxis("Horizontal");
-        if (grounded || canAirSteer)
-        {
-
-            Vector3 localVelocity = transform.InverseTransformDirection(theRB.linearVelocity); // rigidbody velocity in local space
-
-
-            
-            if (Input.GetKey(KeyCode.LeftControl))
-            {
-                transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * driftTurnMultiplier * turnStrengthSpeedCurve.Evaluate(theRB.linearVelocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
-
-                vehicleModel.localRotation = Quaternion.Euler(vehicleModel.localRotation.eulerAngles.x, turnInput * driftAngle, vehicleModel.localRotation.eulerAngles.z);
-            }
-            else
-            {
-                transform.localRotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * turnStrengthSpeedCurve.Evaluate(theRB.linearVelocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
-
-                vehicleModel.localRotation = Quaternion.Euler(vehicleModel.localRotation.eulerAngles.x, 0, vehicleModel.localRotation.eulerAngles.z);
-            }
-        }
-
-        //turns wheels
-        leftFrontWheel.localRotation = Quaternion.Euler(leftFrontWheel.localRotation.eulerAngles.x, (turnInput * maxWheelTurn) - 180, leftFrontWheel.localRotation.eulerAngles.z);
-        rightFrontWheel.localRotation = Quaternion.Euler(rightFrontWheel.localRotation.eulerAngles.x, turnInput * maxWheelTurn, rightFrontWheel.localRotation.eulerAngles.z);
+        UpdateSteering();
 
         //ultimately moves the car.
         transform.position = theRB.transform.position;
@@ -209,7 +185,7 @@ public class CarController : MonoBehaviour
             jumpsSinceGrounded = 0;
         }
 
-        
+
         emissionRate = 0;//clears the emission rate of particles if not moving
 
 
@@ -233,9 +209,9 @@ public class CarController : MonoBehaviour
         }
 
         //plays the particles if checked to be used
-        if(useParticles)
+        if (useParticles)
         {
-            foreach(ParticleSystem part in dustTrail)
+            foreach (ParticleSystem part in dustTrail)
             {
                 var emissionModule = part.emission;
                 emissionModule.rateOverTime = emissionRate;
@@ -247,11 +223,11 @@ public class CarController : MonoBehaviour
     void UpdateUI()
     {
         // Handles the UI Element Array to display chosen value in the designated TMPro box.
-        for(int i = 0; i < UIElementArray.Length; i++)
+        for (int i = 0; i < UIElementArray.Length; i++)
         {
-            if(UIElementArray[i].text == null)
+            if (UIElementArray[i].text == null)
                 continue;
-            
+
             switch (UIElementArray[i].uiType)
             {
                 case UIVariables.Speed:
@@ -272,4 +248,23 @@ public class CarController : MonoBehaviour
         }
     }
 
+    void UpdateSteering()
+    {
+        turnInput = Input.GetAxis("Horizontal"); // Get the turn input axis value;
+
+        if (grounded || canAirSteer)
+        {
+            Vector3 localVelocity = transform.InverseTransformDirection(theRB.linearVelocity); // rigidbody velocity in local space
+            
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * (Input.GetKey(KeyCode.LeftControl) ? driftTurnMultiplier : 1f)  * turnStrengthSpeedCurve.Evaluate(theRB.linearVelocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
+
+            Quaternion targetRotation = Quaternion.Euler(vehicleModel.localRotation.eulerAngles.x, Input.GetKey(KeyCode.LeftControl) ? turnInput * driftAngle : 0, vehicleModel.localRotation.eulerAngles.z); // Target rotation for the vehicle model whilst drifting
+            vehicleModel.localRotation = Quaternion.Lerp(vehicleModel.localRotation, targetRotation, localVelocity.magnitude * 0.25f * Time.deltaTime); // Apply target rotation with a lerp
+        }
+
+        // Turn the wheel visuals
+        leftFrontWheel.localRotation = Quaternion.Euler(leftFrontWheel.localRotation.eulerAngles.x, ((turnInput * maxWheelTurn) - 180) * (Input.GetKey(KeyCode.LeftControl) ? -1f : 1f), leftFrontWheel.localRotation.eulerAngles.z);
+        rightFrontWheel.localRotation = Quaternion.Euler(rightFrontWheel.localRotation.eulerAngles.x, (turnInput * maxWheelTurn) * (Input.GetKey(KeyCode.LeftControl) ? -1f : 1f), rightFrontWheel.localRotation.eulerAngles.z);
+        
+    }
 }
