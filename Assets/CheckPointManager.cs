@@ -13,7 +13,7 @@ public class CheckPointManager : MonoBehaviour
     public CheckpointMode mode = CheckpointMode.Ordered;
     public List<Checkpoint> checkpoints = new List<Checkpoint>();
 
-    private int currentIndex = 0;
+    private int currentIndex = -1;
     private Checkpoint currentCheckpoint;
 
     private void Start()
@@ -29,8 +29,6 @@ public class CheckPointManager : MonoBehaviour
             checkpoint.Deactivate();
         }
         
-        checkpoints[0].Activate();
-
         // Enable the first checkpoint
         SetNextCheckpoint();
     }

@@ -7,7 +7,7 @@ public class Checkpoint : MonoBehaviour
 
     private void Awake()
     {
-        manager = FindObjectOfType<CheckPointManager>();
+        manager = FindFirstObjectByType<CheckPointManager>();
         GetComponent<Collider>().isTrigger = true;
     }
 

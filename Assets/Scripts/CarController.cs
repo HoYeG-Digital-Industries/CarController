@@ -65,7 +65,6 @@ public class CarController : MonoBehaviour
     [Header("Model")]
     public Transform vehicleModel;
 
-
     [Header("Particles")]
     [Tooltip("Turns particles on or off")]
     public bool useParticles;
@@ -74,32 +73,6 @@ public class CarController : MonoBehaviour
     [Range(0, 50f)] public float maxEmissionValue = 25f;
     private float emissionRate;
     private GameObject particleHolder;
-
-    [Header("Timing data")]
-    [Tooltip("This is the current time since the level started")]
-    public float timeSinceStart = 0f;
-    private bool isTiming;
-
-    [SerializeField]
-    public enum UIVariables
-    {
-        Speed = 0,
-        MaxAcceleration,
-        Time,
-        Score,
-    }
-
-    [Serializable]
-    public struct UIElement
-    {
-        public TextMeshProUGUI text;
-        public string textPrefix, textSuffix;
-        public UIVariables uiType;
-    }
-
-    [Header("UI")]
-    public UIElement[] UIElementArray;
-
 
     void Start()
     {
@@ -116,21 +89,10 @@ public class CarController : MonoBehaviour
         }
 
         jumpsSinceGrounded = 0;
-
-        // Initialise the timer
-        timeSinceStart = 0.0f;
-
-        // In the future, this can happen on a countdown or when the player first moves
-        isTiming = true; // TODO: For now, timing starts automatically on start
     }
 
     void Update() //update that runs based on frame rate of machine
     {
-        UpdateUI();
-
-        // Update the the timer
-        timeSinceStart += Time.deltaTime;
-
         if (Input.GetKey(KeyCode.LeftShift)) // TODO: Migrate this to the new input system
         {
             isBoosting = true;
@@ -218,34 +180,6 @@ public class CarController : MonoBehaviour
             }
         }
 
-    }
-
-    void UpdateUI()
-    {
-        // Handles the UI Element Array to display chosen value in the designated TMPro box.
-        for (int i = 0; i < UIElementArray.Length; i++)
-        {
-            if (UIElementArray[i].text == null)
-                continue;
-
-            switch (UIElementArray[i].uiType)
-            {
-                case UIVariables.Speed:
-                    UIElementArray[i].text.text = UIElementArray[i].textPrefix + theRB.linearVelocity.magnitude.ToString("F0") + UIElementArray[i].textSuffix;
-                    break;
-                case UIVariables.MaxAcceleration:
-                    UIElementArray[i].text.text = UIElementArray[i].textPrefix + forwardAccel.ToString("F1") + UIElementArray[i].textSuffix;
-                    break;
-                case UIVariables.Time:
-                    UIElementArray[i].text.text = UIElementArray[i].textPrefix + timeSinceStart.ToString("F2") + UIElementArray[i].textSuffix;
-                    break;
-                case UIVariables.Score:
-                    UIElementArray[i].text.text = UIElementArray[i].textPrefix + GameManager.Instance.score.ToString() + UIElementArray[i].textSuffix;
-                    break;
-                default:
-                    continue;
-            }
-        }
     }
 
     void UpdateSteering()
