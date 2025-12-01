@@ -186,19 +186,25 @@ public class CarController : MonoBehaviour
     {
         turnInput = Input.GetAxis("Horizontal"); // Get the turn input axis value;
 
+        bool isDrifting = false;
+        if(Input.GetKey(KeyCode.LeftControl) && canDrift)
+        {
+            isDrifting = true;
+        }
+
         if (grounded || canAirSteer)
         {
             Vector3 localVelocity = transform.InverseTransformDirection(theRB.linearVelocity); // rigidbody velocity in local space
             
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * (Input.GetKey(KeyCode.LeftControl) ? driftTurnMultiplier : 1f)  * turnStrengthSpeedCurve.Evaluate(theRB.linearVelocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * (turnStrength * (isDrifting ? driftTurnMultiplier : 1f)  * turnStrengthSpeedCurve.Evaluate(theRB.linearVelocity.magnitude)) * (localVelocity.z * 0.1f) * Time.deltaTime, 0f));
 
-            Quaternion targetRotation = Quaternion.Euler(vehicleModel.localRotation.eulerAngles.x, Input.GetKey(KeyCode.LeftControl) ? turnInput * driftAngle : 0, vehicleModel.localRotation.eulerAngles.z); // Target rotation for the vehicle model whilst drifting
+            Quaternion targetRotation = Quaternion.Euler(vehicleModel.localRotation.eulerAngles.x, isDrifting ? turnInput * driftAngle : 0, vehicleModel.localRotation.eulerAngles.z); // Target rotation for the vehicle model whilst drifting
             vehicleModel.localRotation = Quaternion.Lerp(vehicleModel.localRotation, targetRotation, localVelocity.magnitude * 0.25f * Time.deltaTime); // Apply target rotation with a lerp
         }
 
         // Turn the wheel visuals
-        leftFrontWheel.localRotation = Quaternion.Euler(leftFrontWheel.localRotation.eulerAngles.x, ((turnInput * maxWheelTurn) - 180) * (Input.GetKey(KeyCode.LeftControl) ? -1f : 1f), leftFrontWheel.localRotation.eulerAngles.z);
-        rightFrontWheel.localRotation = Quaternion.Euler(rightFrontWheel.localRotation.eulerAngles.x, (turnInput * maxWheelTurn) * (Input.GetKey(KeyCode.LeftControl) ? -1f : 1f), rightFrontWheel.localRotation.eulerAngles.z);
+        leftFrontWheel.localRotation = Quaternion.Euler(leftFrontWheel.localRotation.eulerAngles.x, ((turnInput * maxWheelTurn) - 180) * (isDrifting ? -1f : 1f), leftFrontWheel.localRotation.eulerAngles.z);
+        rightFrontWheel.localRotation = Quaternion.Euler(rightFrontWheel.localRotation.eulerAngles.x, (turnInput * maxWheelTurn) * (isDrifting ? -1f : 1f), rightFrontWheel.localRotation.eulerAngles.z);
         
     }
 }
